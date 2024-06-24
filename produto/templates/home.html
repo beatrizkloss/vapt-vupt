@@ -1,0 +1,61 @@
+{%extends 'base.html'%} {% block content%} {% load static %}
+<section class="first-section" id="home">
+  <div class="conteudo-principal">
+    <h1>Deixe seu dia mais saboroso!!!</h1>
+    <h2>O pedido mais rápido da Região</h2>
+    <div class="btn">
+      <a href="login.html">
+        <button class="login">Faça seu Pedido</button>
+      </a>
+      <a href="cadastro.html">
+        <button class="cadastro">Crie sua conta</button>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="sobre-nos" id="sobrenos">
+  <div class="main">
+    <div class="contentsobre">
+      <h2>Sobre nós</h2>
+      <p>
+        Bem-vindo à nossa Pizzaria Tradicional na Tijuca, onde servimos pizzas
+        de massa grossa e artesanal há mais de 40 anos. Fundada com paixão pela
+        culinária italiana, nossa pizzaria é um verdadeiro marco na região,
+        conhecida por manter receitas autênticas e um sabor inigualável que
+        atravessa gerações. Aqui, cada pizza é preparada com ingredientes
+        selecionados e uma dedicação artesanal que faz toda a diferença. Nossa
+        massa é feita à mão, garantindo uma textura única e saborosa, enquanto
+        nossas coberturas são cuidadosamente escolhidas para proporcionar a
+        melhor experiência gastronômica aos nossos clientes. Ao longo dos anos,
+        construímos uma reputação baseada na qualidade, tradição e atendimento
+        acolhedor. Venha nos visitar e descubra por que somos a escolha
+        preferida de tantas famílias e amigos na Tijuca. Nossa história e nossos
+        sabores esperam por você!
+      </p>
+    </div>
+    <div class="img-cozinha">
+      <img src="{% static 'produto/img/cozinha2.png'%}" alt="" />
+    </div>
+  </div>
+</section>
+
+<section class="cardapio" id="cardapio">
+  <h2>Cardápio</h2>
+  {% for produto in produtos %} {% if produto.ativo %}
+  <div class="itens-cardapio">
+    <div class="pizzas">
+      <img src="/media/{{produto.img}}" alt="Pizza" />
+      <div class="info">
+        <h3>{{produto.nome_produto}}</h3>
+        <h4>{{produto.descricao}}</h4>
+
+        <a href="{% url 'produto' produto.id%}">
+          <button class="pedir">pedir agora</button>
+        </a>
+      </div>
+    </div>
+  </div>
+  {% endif %} {% endfor %}
+</section>
+{%endblock%}
