@@ -1,74 +1,105 @@
-{%extends 'base.html'%} {%block 'head'%}
+{%extends 'base.html'%} {% load static %} {%block 'head'%}
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 
-{%endblock%} {% block content%}
-<li><a href="{% url 'home'%}">Home</a></li>
-<li><a href="{% url 'home'%}">Sobre nós</a></li>
-<li><a href="{% url 'home'%}">Cardápio</a></li>
-<li><a href="#contatos">Contatos</a></li>
-<li>
-  <div style="align-items: center; text-align: center">
-    <div class="container">
-      {% if erro == '1'%}
-      <br />
-      <br />
-      <div class="alert alert-danger" role="alert">
-        Confira a quantidade de adicionais selecionados
-      </div>
-      {%endif%}
+{%endblock%} {%block 'menu'%}
+<header>
+  <div class="content">
+    <div class="logo">
+      <img src="{% static 'produto/img/Ativo_4.png'%}" alt="Cupcake" />
+      <h3>VaptVupt</h3>
     </div>
-    <img
-      class="tamanhoImg"
-      style="margin-top: 20px"
-      src="/media/{{produto.img}}"
+
+    <ul class="list-menu">
+      <li><a href="{% url 'home'%}">Home</a></li>
+      <li><a href="{% url 'home'%}">Sobre nós</a></li>
+      <li><a href="{% url 'home'%}">Cardápio</a></li>
+      <li><a href="#contatos">Contatos</a></li>
+      <li>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+      </li>
+      <li>
+        <a class="navbar-brand" href=""
+          >{{carrinho}}x<svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="1.2em"
+            height="1.2em"
+            fill="currentColor"
+            class="bi bi-cart3"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"
+            />
+          </svg>
+        </a>
+      </li>
+    </ul>
+
+    <div class="menu-toggle">
+      <div class="one"></div>
+      <div class="two"></div>
+      <div class="three"></div>
+    </div>
+  </div>
+</header>
+{%endblock%} {% block content%}
+
+<div style="align-items: center; text-align: center">
+  <div class="container">
+    {% if erro == '1'%}
+    <br />
+    <br />
+    <div class="alert alert-danger" role="alert">
+      Confira a quantidade de adicionais selecionados
+    </div>
+    {%endif%}
+  </div>
+  <img
+    class="tamanhoImg"
+    style="margin-top: 20px"
+    src="/media/{{produto.img}}"
+  />
+
+  <h3 class="titulo tituloProduto">{{produto.nome_produto}}</h3>
+  <hr style="width: 250px" />
+  <h1 class="titulo subTituloProduto">Descrição:</h1>
+  <h3 style="color: gray">{{produto.descricao}}</h3>
+  <h1 class="titulo subTituloProduto">Ingredientes:</h1>
+  <h3 style="color: gray">{{produto.ingredientes}}</h3>
+
+  <h1 class="titulo subTituloProduto">Escolha seus adicionais:</h1>
+
+  <form method="POST" action="{% url 'add_carrinho' %}">
+    {% csrf_token %}
+    <input name="id" style="display: none" type="text" value="{{produto.id}}" />
+    {% for i in produto.adicionais.all %}
+    <h1>{{i}}</h1>
+    <p>Escolha no mínimo {{i.minimo}} e no máximo {{i.maximo}} {{i}}</p>
+    {%for j in i.opcoes.all%} {%if j.ativo%}
+    <div>
+      <input type="checkbox" class="checkbox" name="{{i}}" value="{{j.id}}" />
+      <label for="scales">&nbsp&nbsp&nbsp{{j}} + R${{j.acrecimo}}</label>
+    </div>
+    <br />
+    {%endif%} {%endfor%} {% endfor %}
+    <h1 class="titulo subTituloProduto">Observações:</h1>
+    <input name="observacoes" class="observacoes" type="text" />
+
+    <h1 class="titulo subTituloProduto">Quantidade:</h1>
+    <input
+      name="quantidade"
+      class="observacoes"
+      type="number"
+      min="1"
+      max="200"
+      value="1"
     />
 
-    <h3 class="titulo tituloProduto">{{produto.nome_produto}}</h3>
-    <hr style="width: 250px" />
-    <h1 class="titulo subTituloProduto">Descrição:</h1>
-    <h3 style="color: gray">{{produto.descricao}}</h3>
-    <h1 class="titulo subTituloProduto">Ingredientes:</h1>
-    <h3 style="color: gray">{{produto.ingredientes}}</h3>
+    <h1 class="titulo subTituloProduto">Preço:</h1>
+    <h3>R${{produto.preco}} Unidade</h3>
 
-    <h1 class="titulo subTituloProduto">Escolha seus adicionais:</h1>
+    <input class="botao" type="submit" value="Adicionar carrinho" />
+  </form>
+</div>
 
-    <form method="POST" action="{% url 'add_carrinho' %}">
-      {% csrf_token %}
-      <input
-        name="id"
-        style="display: none"
-        type="text"
-        value="{{produto.id}}"
-      />
-      {% for i in produto.adicionais.all %}
-      <h1>{{i}}</h1>
-      <p>Escolha no mínimo {{i.minimo}} e no máximo {{i.maximo}} {{i}}</p>
-      {%for j in i.opcoes.all%} {%if j.ativo%}
-      <div>
-        <input type="checkbox" class="checkbox" name="{{i}}" value="{{j.id}}" />
-        <label for="scales">&nbsp&nbsp&nbsp{{j}} + R${{j.acrecimo}}</label>
-      </div>
-      <br />
-      {%endif%} {%endfor%} {% endfor %}
-      <h1 class="titulo subTituloProduto">Observações:</h1>
-      <input name="observacoes" class="observacoes" type="text" />
-
-      <h1 class="titulo subTituloProduto">Quantidade:</h1>
-      <input
-        name="quantidade"
-        class="observacoes"
-        type="number"
-        min="1"
-        max="200"
-        value="1"
-      />
-
-      <h1 class="titulo subTituloProduto">Preço:</h1>
-      <h3>R${{produto.preco}} Unidade</h3>
-
-      <input class="botao" type="submit" value="Adicionar carrinho" />
-    </form>
-  </div>
-
-  {%endblock%}
-</li>
+{%endblock%}
