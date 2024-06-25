@@ -39,12 +39,4 @@ class ItemPedido(models.Model):
     descricao = models.TextField()
     adicionais = models.TextField()
 
-class ItemPedido(models.Model):
-    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)
-    produto = models.ForeignKey(Produto, on_delete=models.CASCADE)
-    quantidade = models.IntegerField()
-    preco = models.FloatField()
-    descricao = models.TextField()
-    adicionais = models.TextField()
-
 # Create your models here.
