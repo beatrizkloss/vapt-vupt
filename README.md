@@ -1,9 +1,10 @@
 ## VaptVupt
 
-Este projeto é um site de fast food, produzido para um projeto da faculdade, focado em pedidos de pizza. O objetivo é permitir que os usuários escolham pizzas e realizem seus pedidos online de forma simples e rápida. 
+Este projeto consiste em um site de fast food desenvolvido como parte de um trabalho acadêmico, com foco na gestão de pedidos de pizza. O objetivo principal é proporcionar aos usuários uma experiência prática e intuitiva, permitindo que escolham suas pizzas preferidas e realizem pedidos online de maneira ágil e eficiente.
 
 ## Tecnologias usadas
 
-Frontend: HTML e Css
-Backend: Python com o framework Django
+Python e Django
+
+SQlite
  
